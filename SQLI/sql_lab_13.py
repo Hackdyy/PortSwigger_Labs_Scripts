@@ -10,7 +10,7 @@ import click
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-proxies = {'http':'http://127.0.0.1:8080', 'https':'https://127.0.0.1:8080'}
+#proxies = {'http':'http://127.0.0.1:8080', 'https':'https://127.0.0.1:8080'}
 
 
 
@@ -29,7 +29,7 @@ def injection(url):
     if h4_tag:
         text = h4_tag.get_text()
     
-    # Using a regext pattern to grab the password from the line
+    # Using a regex pattern to grab the password from the line
     match = re.search(r'^ERROR.*\"([A-Za-z0-9]+)\"', text)
     
     # Extracting the text and assigning it to the password variable and print it
